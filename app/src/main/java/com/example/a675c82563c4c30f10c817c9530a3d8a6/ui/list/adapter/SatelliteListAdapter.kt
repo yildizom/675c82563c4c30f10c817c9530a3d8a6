@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.a675c82563c4c30f10c817c9530a3d8a6.databinding.ItemSatelliteBinding
 import com.example.a675c82563c4c30f10c817c9530a3d8a6.domain.model.Satellite
 
-class SatelliteListAdapter(private val onClickItem: (id: Int) -> Unit):
+class SatelliteListAdapter(private val onClickItem: (id: Int, name: String) -> Unit):
     RecyclerView.Adapter<SatelliteViewHolder>() {
 
     private val items = arrayListOf<Satellite>()

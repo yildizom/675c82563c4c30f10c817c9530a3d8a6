@@ -41,7 +41,7 @@ class DetailFragment: Fragment() {
     }
 
     private fun getData() {
-        arguments?.getInt(BUNDLE_KEY_SATELLITE_ID)?.also {
+        arguments?.getInt(BUNDLE_KEY_SATELLITE_ID)?.let {
             lifecycleScope.launch {
                 viewModel.retrieveDataById(it).collectLatest {
                     if (it is Res.Success) {
@@ -54,6 +54,10 @@ class DetailFragment: Fragment() {
                 }
             }
         } ?: findNavController().navigateUp()
+
+        arguments?.getString(BUNDLE_KEY_SATELLITE_NAME)?.let {
+            binding.tvName.text = it
+        }
     }
 
     @SuppressLint("SetTextI18n") // No need for I18n
@@ -75,5 +79,6 @@ class DetailFragment: Fragment() {
 
     companion object {
         const val BUNDLE_KEY_SATELLITE_ID = "detail-satellite-id"
+        const val BUNDLE_KEY_SATELLITE_NAME = "detail-satellite-name"
     }
 }

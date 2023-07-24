@@ -38,8 +38,8 @@ class ListFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val adapter = SatelliteListAdapter {
-            navigateToDetailFragment(it)
+        val adapter = SatelliteListAdapter { id, name ->
+            navigateToDetailFragment(id, name)
         }
         initializeRecyclerView(adapter)
         observeData(adapter)
@@ -62,9 +62,10 @@ class ListFragment: Fragment() {
         }
     }
 
-    private fun navigateToDetailFragment(id: Int) {
+    private fun navigateToDetailFragment(id: Int, name: String) {
         Bundle().apply {
             putInt(DetailFragment.BUNDLE_KEY_SATELLITE_ID, id)
+            putString(DetailFragment.BUNDLE_KEY_SATELLITE_NAME, name)
             findNavController().navigate(R.id.action_listFragment_to_detailFragment, this)
         }
     }

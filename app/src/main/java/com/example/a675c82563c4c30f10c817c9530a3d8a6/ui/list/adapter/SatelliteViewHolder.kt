@@ -7,14 +7,14 @@ import com.example.a675c82563c4c30f10c817c9530a3d8a6.databinding.ItemSatelliteBi
 import com.example.a675c82563c4c30f10c817c9530a3d8a6.domain.model.Satellite
 
 class SatelliteViewHolder(
-    private val onClick: (Int) -> Unit,
+    private val onClick: (Int, String) -> Unit,
     private val binding: ItemSatelliteBinding
 ):
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: Satellite) {
         itemView.setOnClickListener {
-            onClick(item.id)
+            onClick(item.id, item.name)
         }
         binding.tvName.text = item.name
         setActive(item.active)
