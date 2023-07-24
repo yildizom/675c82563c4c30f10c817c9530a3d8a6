@@ -6,9 +6,8 @@ import com.example.a675c82563c4c30f10c817c9530a3d8a6.data.file.dto.SatelliteDeta
 import com.example.a675c82563c4c30f10c817c9530a3d8a6.data.file.dto.SatelliteDto
 import com.example.a675c82563c4c30f10c817c9530a3d8a6.data.room.dao.SatelliteDao
 import com.example.a675c82563c4c30f10c817c9530a3d8a6.data.room.entity.toSatelliteEntity
-import javax.inject.Inject
 
-class SatelliteRepositoryImpl @Inject constructor(
+class SatelliteRepositoryImpl constructor(
     private val satelliteDao: SatelliteDao,
     private val assetsManager: AssetsManager
 ): SatelliteRepository {
