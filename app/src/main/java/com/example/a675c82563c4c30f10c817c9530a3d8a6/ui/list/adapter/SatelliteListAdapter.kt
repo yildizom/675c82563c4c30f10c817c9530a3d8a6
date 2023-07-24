@@ -13,7 +13,7 @@ class SatelliteListAdapter(private val onClickItem: (id: Int, name: String) -> U
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SatelliteViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = ItemSatelliteBinding.inflate(inflater)
+        val binding = ItemSatelliteBinding.inflate(inflater, parent, false)
         return SatelliteViewHolder(onClickItem, binding)
     }
 
