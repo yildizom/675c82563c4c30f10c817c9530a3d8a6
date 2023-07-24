@@ -58,7 +58,7 @@ class DetailFragment: Fragment() {
 
     @SuppressLint("SetTextI18n") // No need for I18n
     private fun onRetrievedData(satelliteDetail: SatelliteDetail) {
-        binding.tvDate.text = satelliteDetail.firstFlight.toString()
+        binding.tvDate.text = satelliteDetail.firstFlightString()
         binding.tvCostValue.text = satelliteDetail.costPerLaunch.toString()
         binding.tvHeightMassValue.text = "${satelliteDetail.height}/${satelliteDetail.mass}"
     }
