@@ -22,4 +22,9 @@ class SatelliteListAdapter(private val onClickItem: (id: Int) -> Unit):
     override fun onBindViewHolder(holder: SatelliteViewHolder, position: Int) {
         holder.bind(items[position])
     }
+
+    fun addData(list: List<Satellite>) {
+        items.addAll(list)
+        notifyItemRangeChanged(items.size - list.size, list.size)
+    }
 }

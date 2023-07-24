@@ -5,10 +5,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.a675c82563c4c30f10c817c9530a3d8a6.databinding.FragmentListBinding
+import com.example.a675c82563c4c30f10c817c9530a3d8a6.domain.model.Res
+import com.example.a675c82563c4c30f10c817c9530a3d8a6.ui.list.adapter.SatelliteListAdapter
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class ListFragment: Fragment() {
 
+    @Inject
+    lateinit var viewModel: ListViewModel
     private var _binding: FragmentListBinding? = null
     private val binding get() = _binding!!
 
@@ -20,6 +31,32 @@ class ListFragment: Fragment() {
         _binding = FragmentListBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val adapter = SatelliteListAdapter {
+            // todo: navigate to detail screen
+        }
+        initializeRecyclerView(adapter)
+        observeData(adapter)
+    }
+
+    private fun observeData(adapter: SatelliteListAdapter) {
+        lifecycleScope.launch {
+            viewModel.items.collectLatest {
+                if (it is Res.Success) {
+                    adapter.addData(it.data)
+                }
+            }
+        }
+    }
+
+    private fun initializeRecyclerView(listAdapter: SatelliteListAdapter) {
+        binding.rv.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            adapter = listAdapter
+        }
     }
 
     override fun onDestroyView() {
