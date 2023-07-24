@@ -9,7 +9,17 @@ data class SatelliteDetail(
     val firstFlight: Date,
     val height: Int,
     val mass: Int
-)
+) {
+    fun toSatelliteDetailDto(): SatelliteDetailDto {
+        return SatelliteDetailDto(
+            id = id,
+            costPerLaunch = costPerLaunch,
+            firstFlight = firstFlight,
+            height = height,
+            mass = mass
+        )
+    }
+}
 
 fun SatelliteDetailDto.toSatelliteDetail(): SatelliteDetail {
     return SatelliteDetail(
