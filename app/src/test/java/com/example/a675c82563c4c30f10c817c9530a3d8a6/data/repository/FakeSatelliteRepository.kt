@@ -21,7 +21,8 @@ class FakeSatelliteRepository: SatelliteRepository {
     )
 
     private val satelliteDetailsFromDb = mutableListOf(
-        SatelliteDetailDto(1, 200, Date(), 100, 1200)
+        SatelliteDetailDto(1, 200, Date(), 100, 1200),
+        SatelliteDetailDto(4, 200, Date(), 100, 1200)
     )
 
     private val positions = PositionsDto(
