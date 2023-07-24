@@ -4,6 +4,7 @@ import com.example.a675c82563c4c30f10c817c9530a3d8a6.data.file.AssetsManager
 import com.example.a675c82563c4c30f10c817c9530a3d8a6.data.file.dto.PositionsDto
 import com.example.a675c82563c4c30f10c817c9530a3d8a6.data.file.dto.SatelliteDetailDto
 import com.example.a675c82563c4c30f10c817c9530a3d8a6.data.file.dto.SatelliteDto
+import com.example.a675c82563c4c30f10c817c9530a3d8a6.data.file.dto.SatellitePositionDto
 import com.example.a675c82563c4c30f10c817c9530a3d8a6.data.room.dao.SatelliteDao
 import com.example.a675c82563c4c30f10c817c9530a3d8a6.data.room.entity.toSatelliteEntity
 
@@ -27,9 +28,10 @@ class SatelliteRepositoryImpl constructor(
         return satelliteDao.getById(id)?.toSatelliteDetailDto()
     }
 
-    override suspend fun getPositionsBySatelliteId(id: Int): PositionsDto {
+    override suspend fun getPositionsBySatelliteId(id: Int): SatellitePositionDto? {
         val positionsPath = "positions.json"
-        return assetsManager.readAssets(positionsPath, PositionsDto::class.java)
+        val positions = assetsManager.readAssets(positionsPath, PositionsDto::class.java)
+        return positions.list.firstOrNull { it.id == id }
     }
 
     override suspend fun saveSatelliteDetail(satelliteDetailDto: SatelliteDetailDto) {
