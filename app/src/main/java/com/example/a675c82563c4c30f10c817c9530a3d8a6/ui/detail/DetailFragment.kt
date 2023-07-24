@@ -1,13 +1,20 @@
 package com.example.a675c82563c4c30f10c817c9530a3d8a6.ui.detail
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.a675c82563c4c30f10c817c9530a3d8a6.databinding.FragmentDetailBinding
+import com.example.a675c82563c4c30f10c817c9530a3d8a6.domain.model.Position
+import com.example.a675c82563c4c30f10c817c9530a3d8a6.domain.model.Res
+import com.example.a675c82563c4c30f10c817c9530a3d8a6.domain.model.SatelliteDetail
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -35,8 +42,30 @@ class DetailFragment: Fragment() {
 
     private fun getData() {
         arguments?.getInt(BUNDLE_KEY_SATELLITE_ID)?.also {
-            viewModel.retrieveDataById(it)
+            lifecycleScope.launch {
+                viewModel.retrieveDataById(it).collectLatest {
+                    if (it is Res.Success) {
+                        onRetrievedData(it.data)
+                    }
+                }
+
+                viewModel.positions.collectLatest {
+                    updatePositionInformation(it)
+                }
+            }
         } ?: findNavController().navigateUp()
+    }
+
+    @SuppressLint("SetTextI18n") // No need for I18n
+    private fun onRetrievedData(satelliteDetail: SatelliteDetail) {
+        binding.tvDate.text = satelliteDetail.firstFlight.toString()
+        binding.tvCostValue.text = satelliteDetail.costPerLaunch.toString()
+        binding.tvHeightMassValue.text = "${satelliteDetail.height}/${satelliteDetail.mass}"
+    }
+
+    @SuppressLint("SetTextI18n") // No need for I18n
+    private fun updatePositionInformation(position: Position) {
+        binding.tvLastPositionValue.text = "(${position.posX},${position.posY})"
     }
 
     override fun onDestroyView() {
