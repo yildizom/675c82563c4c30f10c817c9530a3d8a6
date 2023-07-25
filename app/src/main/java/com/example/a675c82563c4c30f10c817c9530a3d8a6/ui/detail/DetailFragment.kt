@@ -42,21 +42,25 @@ class DetailFragment: Fragment() {
 
     private fun getData() {
         arguments?.getInt(BUNDLE_KEY_SATELLITE_ID)?.let {
-            lifecycleScope.launch {
-                viewModel.retrieveDataById(it).collectLatest {
-                    if (it is Res.Success) {
-                        onRetrievedData(it.data)
-                    }
-                }
-
-                viewModel.positions.collectLatest {
-                    updatePositionInformation(it)
-                }
-            }
+            observeData(it)
         } ?: findNavController().navigateUp()
 
         arguments?.getString(BUNDLE_KEY_SATELLITE_NAME)?.let {
             binding.tvName.text = it
+        }
+    }
+
+    private fun observeData(it: Int) {
+        lifecycleScope.launch {
+            viewModel.retrieveDataById(it).collectLatest {
+                if (it is Res.Success) {
+                    onRetrievedData(it.data)
+                }
+            }
+
+            viewModel.positions.collectLatest {
+                updatePositionInformation(it)
+            }
         }
     }
 

@@ -17,7 +17,7 @@ class DetailViewModel @Inject constructor(
     private val getSatellitePositionsUseCase: GetSatellitePositionsUseCase
 ): ViewModel() {
 
-    private val _positions = MutableSharedFlow<Position>()
+    private val _positions = MutableSharedFlow<Position>(replay = 1)
     val positions get() = _positions
 
     fun retrieveDataById(id: Int) = getSatelliteDetailUseCase(id).also {
@@ -32,10 +32,12 @@ class DetailViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    private suspend fun updatePositionInfo(positions: List<Position>, index: Int = 0) {
-        _positions.emit(positions[index])
-        val nextIndex = if (positions.lastIndex > index) index + 1 else 0
-        delay(3000)
-        updatePositionInfo(positions, nextIndex)
+    private suspend fun updatePositionInfo(positions: List<Position>) {
+        var index = 0
+        while (true) {
+            _positions.emit(positions[index])
+            index = if (positions.lastIndex > index) index + 1 else 0
+            delay(3000)
+        }
     }
 }
