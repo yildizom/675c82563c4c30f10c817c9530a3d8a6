@@ -2,6 +2,15 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="vm"
+            type="com.example.a675c82563c4c30f10c817c9530a3d8a6.ui.list.ListViewModel" />
+    </data>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -10,12 +19,22 @@
         <androidx.appcompat.widget.SearchView
             android:id="@+id/search_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:listitem="@layout/item_satellite" />
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:visibility="@{vm.ofLoading ? View.GONE : View.VISIBLE, default=gone}"
+            tools:listitem="@layout/item_satellite"
+            tools:visibility="gone" />
+
+        <ProgressBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="@{vm.ofLoading ? View.VISIBLE : View.GONE, default=visible}"
+            tools:visibility="visible" />
     </LinearLayout>
 </layout>

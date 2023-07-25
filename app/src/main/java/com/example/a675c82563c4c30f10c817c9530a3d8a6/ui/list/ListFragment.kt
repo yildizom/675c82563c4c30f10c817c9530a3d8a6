@@ -36,6 +36,7 @@ class ListFragment: Fragment() {
     ): View {
         _binding = FragmentListBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
+        binding.vm = viewModel
         return binding.root
     }
 
