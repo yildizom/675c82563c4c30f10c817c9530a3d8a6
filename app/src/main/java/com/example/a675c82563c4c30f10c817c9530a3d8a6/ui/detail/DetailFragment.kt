@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.example.a675c82563c4c30f10c817c9530a3d8a6.R
 import com.example.a675c82563c4c30f10c817c9530a3d8a6.databinding.FragmentDetailBinding
 import com.example.a675c82563c4c30f10c817c9530a3d8a6.domain.model.Position
 import com.example.a675c82563c4c30f10c817c9530a3d8a6.domain.model.Res
@@ -59,7 +60,9 @@ class DetailFragment: Fragment() {
             }
 
             viewModel.positions.collectLatest {
-                updatePositionInformation(it)
+                it?.let { position ->
+                    updatePositionInformation(position)
+                }
             }
         }
     }
@@ -72,7 +75,11 @@ class DetailFragment: Fragment() {
     }
 
     @SuppressLint("SetTextI18n") // No need for I18n
-    private fun updatePositionInformation(position: Position) {
+    private fun updatePositionInformation(position: Position?) {
+        if (position == null) {
+            binding.tvLastPositionValue.text = getString(R.string.not_found)
+            return
+        }
         binding.tvLastPositionValue.text = "(${position.posX},${position.posY})"
     }
 

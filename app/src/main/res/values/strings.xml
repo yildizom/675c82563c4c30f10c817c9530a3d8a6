@@ -7,4 +7,5 @@
     <string name="cost">Cost:\ </string>
     <string name="last_position">Last Position:\ </string>
     <string name="search">Search</string>
+    <string name="not_found">Not found</string>
 </resources>

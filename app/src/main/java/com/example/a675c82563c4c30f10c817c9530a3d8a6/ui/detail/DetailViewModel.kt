@@ -7,7 +7,8 @@ import com.example.a675c82563c4c30f10c817c9530a3d8a6.domain.model.Res
 import com.example.a675c82563c4c30f10c817c9530a3d8a6.domain.usecase.GetSatelliteDetailUseCase
 import com.example.a675c82563c4c30f10c817c9530a3d8a6.domain.usecase.GetSatellitePositionsUseCase
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
@@ -17,8 +18,8 @@ class DetailViewModel @Inject constructor(
     private val getSatellitePositionsUseCase: GetSatellitePositionsUseCase
 ): ViewModel() {
 
-    private val _positions = MutableSharedFlow<Position>(replay = 1)
-    val positions get() = _positions
+    private val _positions = MutableStateFlow<Position?>(null)
+    val positions get() = _positions.asStateFlow()
 
     fun retrieveDataById(id: Int) = getSatelliteDetailUseCase(id).also {
         retrievePositions(id)
