@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -13,6 +14,7 @@ import com.example.a675c82563c4c30f10c817c9530a3d8a6.R
 import com.example.a675c82563c4c30f10c817c9530a3d8a6.databinding.FragmentListBinding
 import com.example.a675c82563c4c30f10c817c9530a3d8a6.domain.model.Res
 import com.example.a675c82563c4c30f10c817c9530a3d8a6.ui.detail.DetailFragment
+import com.example.a675c82563c4c30f10c817c9530a3d8a6.ui.list.adapter.SatelliteDividerItemDecoration
 import com.example.a675c82563c4c30f10c817c9530a3d8a6.ui.list.adapter.SatelliteListAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -61,6 +63,7 @@ class ListFragment: Fragment() {
         binding.rv.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             adapter = listAdapter
+            addItemDecoration(getDividerItemDecoration())
         }
     }
 
@@ -82,6 +85,15 @@ class ListFragment: Fragment() {
             putInt(DetailFragment.BUNDLE_KEY_SATELLITE_ID, id)
             putString(DetailFragment.BUNDLE_KEY_SATELLITE_NAME, name)
             findNavController().navigate(R.id.action_listFragment_to_detailFragment, this)
+        }
+    }
+
+    private fun getDividerItemDecoration(): SatelliteDividerItemDecoration {
+        val c = requireContext()
+        return SatelliteDividerItemDecoration(c, LinearLayoutManager.VERTICAL).apply {
+            ContextCompat.getDrawable(c, R.drawable.item_decoration)?.let {
+                setDrawable(it)
+            }
         }
     }
 
