@@ -10,8 +10,13 @@ import javax.inject.Inject
 
 class GetSatellitesUseCase @Inject constructor(private val satelliteRepository: SatelliteRepository) {
 
-    operator fun invoke(): Flow<Res<List<Satellite>>> = flow {
+    operator fun invoke(query: String): Flow<Res<List<Satellite>>> = flow {
         val satellites = satelliteRepository.getSatellites().map { it.toSatellite() }
-        emit(Res.Success(satellites))
+        if (query.isBlank()) {
+            emit(Res.Success(satellites))
+            return@flow
+        }
+        val filtered = satellites.filter { it.name.lowercase().contains(query.lowercase()) }
+        emit(Res.Success(filtered))
     }
 }

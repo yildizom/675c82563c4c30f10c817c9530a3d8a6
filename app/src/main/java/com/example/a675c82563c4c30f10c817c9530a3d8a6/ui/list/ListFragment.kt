@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -42,6 +43,7 @@ class ListFragment: Fragment() {
             navigateToDetailFragment(id, name)
         }
         initializeRecyclerView(adapter)
+        initializeSearchView()
         observeData(adapter)
     }
 
@@ -49,7 +51,7 @@ class ListFragment: Fragment() {
         lifecycleScope.launch {
             viewModel.items.collectLatest {
                 if (it is Res.Success) {
-                    adapter.addData(it.data)
+                    adapter.setData(it.data)
                 }
             }
         }
@@ -60,6 +62,19 @@ class ListFragment: Fragment() {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             adapter = listAdapter
         }
+    }
+
+    private fun initializeSearchView() {
+        binding.searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(p0: String?): Boolean {
+                viewModel.getItems(p0 ?: "")
+                return false
+            }
+        })
     }
 
     private fun navigateToDetailFragment(id: Int, name: String) {

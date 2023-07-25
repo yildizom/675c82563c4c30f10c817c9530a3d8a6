@@ -23,8 +23,9 @@ class SatelliteListAdapter(private val onClickItem: (id: Int, name: String) -> U
         holder.bind(items[position])
     }
 
-    fun addData(list: List<Satellite>) {
+    fun setData(list: List<Satellite>) {
+        items.clear()
         items.addAll(list)
-        notifyItemRangeChanged(items.size - list.size, list.size)
+        notifyDataSetChanged()
     }
 }
