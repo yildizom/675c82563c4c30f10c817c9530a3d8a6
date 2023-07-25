@@ -24,10 +24,14 @@ class SatelliteViewHolder(
         if (active) {
             binding.viewIconActivity.background.setTint(Color.GREEN)
             binding.tvActivity.text = itemView.context.getString(R.string.active)
+            binding.tvName.alpha = 1f
+            binding.tvActivity.alpha = 1f
         }
         else {
             binding.viewIconActivity.background.setTint(Color.RED)
             binding.tvActivity.text = itemView.context.getString(R.string.passive)
+            binding.tvName.alpha = .5f
+            binding.tvActivity.alpha = .5f
         }
     }
 }
